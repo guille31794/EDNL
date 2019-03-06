@@ -1,5 +1,6 @@
-#ifndef ABIN_EN
-#define ABIN_EN
+#ifndef ABIN_H
+#define ABIN_H
+
 #include <cassert>
 
 template<typename T> class Abin

@@ -1,5 +1,5 @@
-#include "abinEn.hpp"
-#include "abin_E-S.hpp"
+#include "abin.h"
+#include "abin_E-S.h"
 
 using namespace std;
 typedef char tElto;

@@ -13,9 +13,9 @@ using std::endl;
 
 template <typename T>
 void rellenarAbin(Abin<T>& A, const T& fin)
-// Pre: A est� vac�o.
-// Post: Rellena el �rbol A con la estructura y elementos
-//       le�dos en preorden de la entrada est�ndar, usando
+// Pre: A esta vacio.
+// Post: Rellena el arbol A con la estructura y elementos
+//       leidos en preorden de la entrada estandar, usando
 //       fin como elemento especial para introducir nodos nulos.
 {
    T e;
@@ -31,7 +31,7 @@ void rellenarAbin(Abin<T>& A, const T& fin)
 template <typename T>
 void rellenarDescendientes(typename Abin<T>::nodo r, Abin<T>& A, const T& fin)
 // Pre: r es un nodo hoja de A.
-// Post: Lee de la entrada est�ndar y en preorden los descendientes de r,
+// Post: Lee de la entrada estandar y en preorden los descendientes de r,
 //       usando fin para introducir nodos nulos.
 {
    T ehi, ehd;
@@ -56,9 +56,9 @@ void rellenarDescendientes(typename Abin<T>::nodo r, Abin<T>& A, const T& fin)
 
 template <typename T>
 void rellenarAbin(istream& is, Abin<T>& A)
-// Pre: A est� vac�o.
+// Pre: A esta vacio.
 // Post: Extrae los nodos de A del flujo de entrada is,
-//       que contendr� el elemento especial que denota
+//       que contendra el elemento especial que denota
 //       un nodo nulo seguido de los elementos en preorden,
 //       incluyendo los correspondientes a nodos nulos.
 {
@@ -93,21 +93,21 @@ void rellenarDescendientes(istream& is, typename Abin<T>::nodo r, Abin<T>& A, co
 
 template <typename T>
 void imprimirAbin (const Abin<T>& A)
-// Post: Muestra los nodos de A en la salida est�ndar
+// Post: Muestra los nodos de A en la salida estandar
 {
    if (!A.arbolVacioB())
    {
-      cout << "Raiz del arbol: "
+      cout << "Ra�z del �rbol: "
                 << A.elemento(A.raizB()) << endl;
       imprimirDescendientes(A.raizB(), A);
    }
    else
-      cout << "Arbol vacio\n";
+      cout << "�rbol vac�o\n";
 }
 
 template <typename T>
 void imprimirDescendientes (typename Abin<T>::nodo r, const Abin<T>& A)
-// Post: Muestra los descendientes de r en la salida est�ndar.
+// Post: Muestra los descendientes de r en la salida estandar.
 {
    if (A.hijoIzqdoB(r) != Abin<T>::NODO_NULO)
    {

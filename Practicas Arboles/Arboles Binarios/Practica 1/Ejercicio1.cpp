@@ -1,15 +1,17 @@
-#include "abinEn.hpp"
-#include "abin_E-S.hpp"
+#include "../abin.h"
+#include "../abin_E-S.h"
 
-int nodeRec(nodo n, Abin<T> A)
+template <typename T>
+int nodeRec(typename Abin<T>::nodo n, Abin<T> A)
 {
-    if( n == NODO_NULO) 
+    if( n == Abin<T>::NODO_NULO) 
         return 0;
     else
         return 1 + nodeRec(A.hijoIzqdoB(n) + A.hijoDrchoB(n), A);
     
 }
 
+template <typename T>
 int nodeNumber(Abin<T> A)
 {
     return nodeRec(A.raizB(), A);
