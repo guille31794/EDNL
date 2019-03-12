@@ -97,12 +97,12 @@ void imprimirAbin (const Abin<T>& A)
 {
    if (!A.arbolVacioB())
    {
-      cout << "Ra�z del �rbol: "
+      cout << "Raiz del Arbol: "
                 << A.elemento(A.raizB()) << endl;
       imprimirDescendientes(A.raizB(), A);
    }
    else
-      cout << "�rbol vac�o\n";
+      cout << "Arbol vacio\n";
 }
 
 template <typename T>

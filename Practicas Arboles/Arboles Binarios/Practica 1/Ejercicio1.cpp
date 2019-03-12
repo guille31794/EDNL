@@ -7,7 +7,7 @@ int nodeRec(typename Abin<T>::nodo n, Abin<T> A)
     if( n == Abin<T>::NODO_NULO) 
         return 0;
     else
-        return 1 + nodeRec(A.hijoIzqdoB(n) + A.hijoDrchoB(n), A);
+        return 1 + nodeRec(A.hijoIzqdoB(n), A) + nodeRec(A.hijoDrchoB(n), A);
     
 }
 
