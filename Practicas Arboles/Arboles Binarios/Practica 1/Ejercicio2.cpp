@@ -13,7 +13,7 @@ template <typename T>
 int heightRec(Abin<T> A, typename Abin<T>::nodo n)
 {
     if (n == Abin<T>::NODO_NULO)
-        return -1;
+        return 0;
     else 
         return 1 + max(heightRec(A, A.hijoIzqdoB(n)), heightRec(A, A.hijoDrchoB(n)));
 }
@@ -24,7 +24,7 @@ int height(Abin<T> A)
     if(A.arbolVacioB())
         return 0;
     else
-        return heightRec(A, A.raizB());
+        return heightRec(A, A.raizB())-1;
 }
 
 int main(int argc, char const *argv[])
