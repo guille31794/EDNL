@@ -1,15 +1,15 @@
-#ifndef AbinVec_VEC1_H
-#define AbinVec_VEC1_H
+#ifndef Abin_VEC1_H
+#define Abin_VEC1_H
 #include <cassert>
 #include <cmath>
 #include <iostream>
 
-template <typename T> class AbinVec {
+template <typename T> class Abin {
     public:
         typedef int nodo; // índice del vector entre 0 y maxNodos-1
         static const nodo NODO_NULO;
-        //explicit AbinVec(size_t maxNodos, const T& e_nulo = T()); //ctor
-        explicit AbinVec(unsigned alturaArbol, const T& e_nulo = T()); //ctor
+        //explicit Abin(size_t maxNodos, const T& e_nulo = T()); //ctor
+        explicit Abin(unsigned alturaArbol, const T& e_nulo = T()); //ctor
         void insertarRaizB(const T& e);
         void insertarHijoIzqdoB(nodo n, const T& e);
         void insertarHijoDrchoB(nodo n, const T& e);
@@ -17,7 +17,7 @@ template <typename T> class AbinVec {
         void eliminarHijoDrchoB(nodo n);
         
         void enseniarVector();
-        ~AbinVec(); // destructor
+        ~Abin(); // destructor
         
         bool arbolVacioB() const;
         void eliminarRaizB();
@@ -28,11 +28,11 @@ template <typename T> class AbinVec {
         nodo padreB(nodo n) const;
         nodo hijoIzqdoB(nodo n) const;
         nodo hijoDrchoB(nodo n) const;
-        AbinVec(const AbinVec<T>& a); // ctor. de copia
-        AbinVec<T>& operator =(const AbinVec<T>& a); //asignación de árboles
+        Abin(const Abin<T>& a); // ctor. de copia
+        Abin<T>& operator =(const Abin<T>& a); //asignación de árboles
         
-        int profundidadNodo(nodo n) const;
-        int profundidadNodoRec(nodo n, nodo nodo, int inicio, int fin) const;
+        int profundidad(nodo n) const;
+        //int profundidadNodoRec(nodo n, nodo nodo, int inicio, int fin) const;
     private:
         T* nodos; // vector de nodos
         int maxNodos; // tamaño del vector
@@ -40,9 +40,9 @@ template <typename T> class AbinVec {
 };
 
 /* Definición del nodo nulo */
-template <typename T> const typename AbinVec<T>::nodo AbinVec<T>::NODO_NULO(-1);
+template <typename T> const typename Abin<T>::nodo Abin<T>::NODO_NULO(-1);
 
-template <typename T> AbinVec<T>::AbinVec(unsigned alturaArbol, const T& e_nulo) : ELTO_NULO(e_nulo)
+template <typename T> Abin<T>::Abin(unsigned alturaArbol, const T& e_nulo) : ELTO_NULO(e_nulo)
 {
     maxNodos = pow(2, alturaArbol) - 1;
     nodos = new T[maxNodos];
@@ -52,17 +52,26 @@ template <typename T> AbinVec<T>::AbinVec(unsigned alturaArbol, const T& e_nulo)
         nodos[n] = ELTO_NULO;
 }
 
-template <typename T> inline void AbinVec<T>::insertarRaizB(const T& e)
+template <typename T> inline void Abin<T>::insertarRaizB(const T& e)
 {
     assert(nodos[maxNodos / 2] == ELTO_NULO); // árbol vacío
     nodos[maxNodos / 2] = e;
 }
 
-template <typename T> inline int AbinVec<T>::profundidadNodo(AbinVec<T>::nodo n) const {
-    return profundidadNodoRec(n, raizB(), 0, maxNodos);
+template <typename T> inline int Abin<T>::profundidad(Abin<T>::nodo n) const {
+    //return profundidadNodoRec(n, raizB(), 0, maxNodos);
+    int profundidad = 0;
+
+    while(n != NODO_NULO)
+    {
+        ++profundidad;
+        n = padreB(n);
+    }
+
+    return profundidad;
 }
 
-template <typename T> inline int AbinVec<T>::profundidadNodoRec(AbinVec<T>::nodo n, AbinVec<T>::nodo nodo, int inicio, int fin) const {
+/*template <typename T> inline int Abin<T>::profundidadNodoRec(Abin<T>::nodo n, Abin<T>::nodo nodo, int inicio, int fin) const {
     if(nodo == n)
         return 0;
     else if(nodo > n)
@@ -75,9 +84,9 @@ template <typename T> inline int AbinVec<T>::profundidadNodoRec(AbinVec<T>::nodo
         fin = fin / 2;
         return 1 + profundidadNodoRec(n, ((inicio + fin) / 2), inicio, fin);
     }
-}
+}*/
 
-template <typename T> inline void AbinVec<T>::enseniarVector() {
+template <typename T> inline void Abin<T>::enseniarVector() {
     for (int i = 0; i < maxNodos; i++) {
         if(nodos[i] != ELTO_NULO)
             std::cout << " " << nodos[i] << " ";
@@ -87,9 +96,9 @@ template <typename T> inline void AbinVec<T>::enseniarVector() {
     std::cout << std::endl;
 }
 
-template <typename T> inline typename AbinVec<T>::nodo AbinVec<T>::hijoIzqdoB(AbinVec<T>::nodo n) const
+template <typename T> inline typename Abin<T>::nodo Abin<T>::hijoIzqdoB(Abin<T>::nodo n) const
 {
-    int num = n - ((maxNodos+1) / pow(2, profundidadNodo(n) + 2));
+    int num = n - ((maxNodos+1) / pow(2, profundidad(n) + 2));
     
     assert(n >= 0 && n <= maxNodos-1); // nodo válido
     assert(nodos[n] != ELTO_NULO);     // nodo del árbol
@@ -97,9 +106,9 @@ template <typename T> inline typename AbinVec<T>::nodo AbinVec<T>::hijoIzqdoB(Ab
     return (num >= maxNodos || nodos[num] == ELTO_NULO) ?  NODO_NULO : num;
 }
 
-template <typename T> inline typename AbinVec<T>::nodo AbinVec<T>::hijoDrchoB(AbinVec<T>::nodo n) const
+template <typename T> inline typename Abin<T>::nodo Abin<T>::hijoDrchoB(Abin<T>::nodo n) const
 {
-    int num = n + ((maxNodos+1) / pow(2, profundidadNodo(n) + 2));
+    int num = n + ((maxNodos+1) / pow(2, profundidad(n) + 2));
     
     assert(n >= 0 && n <= maxNodos-1); // nodo válido
     assert(nodos[n] != ELTO_NULO);     // nodo del árbol
@@ -107,9 +116,9 @@ template <typename T> inline typename AbinVec<T>::nodo AbinVec<T>::hijoDrchoB(Ab
     return (num >= maxNodos || nodos[num] == ELTO_NULO) ?  NODO_NULO : num;
 }
 
-template <typename T> inline void AbinVec<T>::insertarHijoIzqdoB(AbinVec<T>::nodo n, const T& e)
+template <typename T> inline void Abin<T>::insertarHijoIzqdoB(Abin<T>::nodo n, const T& e)
 {
-    int num = n - ((maxNodos+1) / pow(2, profundidadNodo(n) + 2));
+    int num = n - ((maxNodos+1) / pow(2, profundidad(n) + 2));
     
     assert(n >= 0 && n <= maxNodos-1);      // nodo válido
     assert(nodos[n] != ELTO_NULO);          // nodo del árbol
@@ -120,9 +129,9 @@ template <typename T> inline void AbinVec<T>::insertarHijoIzqdoB(AbinVec<T>::nod
     nodos[num] = e;
 }
 
-template <typename T> inline void AbinVec<T>::insertarHijoDrchoB(AbinVec<T>::nodo n,const T& e)
+template <typename T> inline void Abin<T>::insertarHijoDrchoB(Abin<T>::nodo n,const T& e)
 {
-    int num = n + ((maxNodos+1) / pow(2, profundidadNodo(n) + 2));
+    int num = n + ((maxNodos+1) / pow(2, profundidad(n) + 2));
     assert(n >= 0 && n < maxNodos-1);       // nodo válido
     assert(nodos[n] != ELTO_NULO);          // nodo del árbol
     
@@ -131,7 +140,7 @@ template <typename T> inline void AbinVec<T>::insertarHijoDrchoB(AbinVec<T>::nod
     nodos[num] = e;
 }
 
-//template <typename T> inline void AbinVec<T>::eliminarHijoIzqdoB(AbinVec<T>::nodo n)
+//template <typename T> inline void Abin<T>::eliminarHijoIzqdoB(Abin<T>::nodo n)
 //{
 //    assert(n >= 0 && n <= maxNodos-1);      // nodo válido
 //    assert(nodos[n] != ELTO_NULO);          // nodo del árbol
@@ -147,7 +156,7 @@ template <typename T> inline void AbinVec<T>::insertarHijoDrchoB(AbinVec<T>::nod
 //    nodos[2*n+1] = ELTO_NULO;
 //}
 //
-//template <typename T> inline void AbinVec<T>::eliminarHijoDrchoB(AbinVec<T>::nodo n)
+//template <typename T> inline void Abin<T>::eliminarHijoDrchoB(Abin<T>::nodo n)
 //{
 //    assert(n >= 0 && n <= maxNodos-1);      // nodo válido
 //    assert(nodos[n] != ELTO_NULO);          // nodo del árbol
@@ -163,7 +172,7 @@ template <typename T> inline void AbinVec<T>::insertarHijoDrchoB(AbinVec<T>::nod
 //    nodos[2*n+2] = ELTO_NULO;
 //}
 
-template <typename T> inline void AbinVec<T>::eliminarRaizB()
+template <typename T> inline void Abin<T>::eliminarRaizB()
 {
     assert(nodos[maxNodos / 2] != ELTO_NULO);          // árbol no vacío
     assert(nodos[maxNodos / 4] == ELTO_NULO &&
@@ -171,58 +180,58 @@ template <typename T> inline void AbinVec<T>::eliminarRaizB()
     nodos[maxNodos / 2] = ELTO_NULO;
 }
 
-template <typename T> inline AbinVec<T>::~AbinVec()
+template <typename T> inline Abin<T>::~Abin()
 {
     delete[] nodos;
 }
 
-template <typename T> inline bool AbinVec<T>::arbolVacioB() const
+template <typename T> inline bool Abin<T>::arbolVacioB() const
 {
     return (nodos[maxNodos / 2] == ELTO_NULO);
 }
 
-template <typename T> inline const T& AbinVec<T>::elemento(AbinVec<T>::nodo n) const
+template <typename T> inline const T& Abin<T>::elemento(Abin<T>::nodo n) const
 {
     assert(n >= 0 && n <= maxNodos-1);    // nodo válido
     assert(nodos[n] != ELTO_NULO);        // nodo del árbol
     return nodos[n];
 }
 
-template <typename T> inline T& AbinVec<T>::elemento(AbinVec<T>::nodo n)
+template <typename T> inline T& Abin<T>::elemento(Abin<T>::nodo n)
 {
     assert(n >= 0 && n <= maxNodos-1);   // nodo válido
     assert(nodos[n] != ELTO_NULO);       // nodo del árbol
     return nodos[n];
 }
 
-template <typename T> inline typename AbinVec<T>::nodo AbinVec<T>::raizB() const
+template <typename T> inline typename Abin<T>::nodo Abin<T>::raizB() const
 {
     return (nodos[maxNodos / 2] == ELTO_NULO) ? NODO_NULO : nodo(maxNodos / 2);
 }
 
-template <typename T> inline typename AbinVec<T>::nodo AbinVec<T>::padreB(AbinVec<T>::nodo n) const
+template <typename T> inline typename Abin<T>::nodo Abin<T>::padreB(Abin<T>::nodo n) const
 {
     assert(n >= 0 && n <= maxNodos-1);  // nodo válido
     assert(nodos[n] != ELTO_NULO);      // nodo del árbol
     
-    if (n % ((maxNodos+1) / pow(2, profundidadNodo(n)+1)) == (((maxNodos + 1) / pow(2, profundidadNodo(n)+1)) - 1))
+    if (n % ((maxNodos+1) / pow(2, profundidad(n)+1)) == (((maxNodos + 1) / pow(2, profundidad(n)+1)) - 1))
     {
-        return n + (maxNodos + 1) / pow(2, profundidadNodo(n) + 1);
+        return n + (maxNodos + 1) / pow(2, profundidad(n) + 1);
     }
     else
     {
-        return n - (maxNodos + 1) / pow(2, profundidadNodo(n) + 1);
+        return n - (maxNodos + 1) / pow(2, profundidad(n) + 1);
     }
 }
 
-template <typename T> AbinVec<T>::AbinVec(const AbinVec<T>& a) : nodos(new T[a.maxNodos]), maxNodos(a.maxNodos), ELTO_NULO(a.ELTO_NULO)
+template <typename T> Abin<T>::Abin(const Abin<T>& a) : nodos(new T[a.maxNodos]), maxNodos(a.maxNodos), ELTO_NULO(a.ELTO_NULO)
 {
     // copiar el vector
     for (nodo n = 0; n <= maxNodos-1; n++)
         nodos[n] = a.nodos[n];
 }
 
-template <typename T> AbinVec<T>& AbinVec<T>::operator =(const AbinVec<T>& a)
+template <typename T> Abin<T>& Abin<T>::operator =(const Abin<T>& a)
 {
     if (this != &a) // evitar autoasignación
     {
@@ -241,4 +250,4 @@ template <typename T> AbinVec<T>& AbinVec<T>::operator =(const AbinVec<T>& a)
     }
     return *this;
 }
-#endif // AbinVec_VEC1_H
+#endif // Abin_VEC1_H

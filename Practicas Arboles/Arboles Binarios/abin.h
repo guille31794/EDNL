@@ -24,6 +24,7 @@ template <typename T> class Abin {
         nodo hijoDrchoB(nodo n) const;
         Abin(const Abin<T>& a); // ctor. de copia
         Abin<T>& operator =(const Abin<T>& a); //asignación de árboles
+        int profundidad(nodo n) const;
     private:
         struct celda {
             T elto;
@@ -35,6 +36,24 @@ template <typename T> class Abin {
         void destruirNodos(nodo& n);
         nodo copiar(nodo n);
 };
+
+template <typename T>
+int Abin<T>::profundidad(typename Abin<T>::nodo n) const
+{
+    int depth = -1;
+    if(!arbolVacioB())
+    {
+        while(n != Abin<T>::NODO_NULO)
+        {
+            ++depth;
+            n = padreB(n);
+        }
+
+        return depth;   
+    }
+        
+    return depth;
+}
 
 /* Definición del nodo nulo */
 template <typename T>
@@ -87,6 +106,7 @@ inline void Abin<T>::eliminarHijoDrchoB(Abin<T>::nodo n)
     delete(n->hder);
     n->hder = NODO_NULO;
 }
+
 template <typename T>
 inline void Abin<T>::eliminarRaizB()
 {
@@ -200,4 +220,5 @@ typename Abin<T>::nodo Abin<T>::copiar(Abin<T>::nodo n)
     }
     return m;
 }
+
 #endif // ABIN_H
