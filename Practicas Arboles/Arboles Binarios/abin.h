@@ -1,6 +1,9 @@
 #ifndef ABIN_H
 #define ABIN_H
 #include <cassert>
+#include <algorithm>
+
+using namespace std;
 
 template <typename T> class Abin {
     struct celda; // declaración adelantada privada
@@ -25,6 +28,7 @@ template <typename T> class Abin {
         Abin(const Abin<T>& a); // ctor. de copia
         Abin<T>& operator =(const Abin<T>& a); //asignación de árboles
         int profundidad(nodo n) const;
+        int altura(nodo n) const;
     private:
         struct celda {
             T elto;
@@ -36,6 +40,15 @@ template <typename T> class Abin {
         void destruirNodos(nodo& n);
         nodo copiar(nodo n);
 };
+
+template <typename T>
+int Abin<T>::altura(typename Abin<T>::nodo n) const
+{
+    if (n == Abin<T>::NODO_NULO)
+        return 0;
+    else 
+        return 1 + max(altura(hijoIzqdoB(n)), altura(hijoDrchoB(n)));
+}
 
 template <typename T>
 int Abin<T>::profundidad(typename Abin<T>::nodo n) const
