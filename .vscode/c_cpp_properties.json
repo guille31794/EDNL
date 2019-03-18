@@ -4,7 +4,8 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/local/Cellar/gcc/7.3.0_1/include/c++/7.3.0/tr1"
+                "/usr/local/Cellar/gcc/7.3.0_1/include/c++/7.3.0/tr1",
+                "/usr/local/Cellar/log4cxx/0.10.0_1/include/log4cxx/helpers"
             ],
             "defines": [],
             "macFrameworkPath": [],

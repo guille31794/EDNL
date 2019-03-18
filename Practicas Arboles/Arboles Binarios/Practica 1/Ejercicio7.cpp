@@ -28,16 +28,17 @@ bool pseudocomplete(Abin<T> A)
 {
     bool pseudocomplete = true;
     if(!A.arbolVacioB())
-    {
+    {   
         typename Abin<T>::nodo root = A.raizB();
-
-        if((A.hijoIzqdoB(root) != Abin<T>::NODO_NULO && 
-        A.hijoDrchoB(root) != Abin<T>::NODO_NULO) || 
-        (A.hijoIzqdoB(root) == Abin<T>::NODO_NULO && 
-        A.hijoDrchoB(root) == Abin<T>::NODO_NULO))
-            pseudocomplete = pseudocompleteRec(A, root);
-        else
-            pseudocomplete = false;
+        if (A.altura(root) == 0)
+            pseudocomplete = true;
+        else if((A.hijoIzqdoB(root) != Abin<T>::NODO_NULO && 
+            A.hijoDrchoB(root) != Abin<T>::NODO_NULO) || 
+            (A.hijoIzqdoB(root) == Abin<T>::NODO_NULO && 
+            A.hijoDrchoB(root) == Abin<T>::NODO_NULO))
+                pseudocomplete = pseudocompleteRec(A, root);
+            else
+                pseudocomplete = false;
     }
     else
         pseudocomplete = true;

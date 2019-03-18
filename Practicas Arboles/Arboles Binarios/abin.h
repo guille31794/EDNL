@@ -30,6 +30,7 @@ template <typename T> class Abin {
         int profundidad(nodo n) const;
         int altura(nodo n) const;
     private:
+        int alturaRec(typename Abin<T>::nodo n) const;
         struct celda {
             T elto;
             nodo padre, hizq, hder;
@@ -42,12 +43,18 @@ template <typename T> class Abin {
 };
 
 template <typename T>
-int Abin<T>::altura(typename Abin<T>::nodo n) const
+inline int Abin<T>::altura(typename Abin<T>::nodo n) const
+{
+    return alturaRec(n) - 1;
+}
+
+template <typename T>
+int Abin<T>::alturaRec(typename Abin<T>::nodo n) const
 {
     if (n == Abin<T>::NODO_NULO)
         return 0;
     else 
-        return 1 + max(altura(hijoIzqdoB(n)), altura(hijoDrchoB(n)));
+        return 1 + max(alturaRec(hijoIzqdoB(n)), alturaRec(hijoDrchoB(n)));
 }
 
 template <typename T>
