@@ -10,12 +10,14 @@ int degreeRec(Agen<T> A, typename Agen<T>::nodo n)
     {
         Agen<T>::nodo hIzq = n;
         ++max;
+        
         while(hIzq != Agen<T>::NODO_NULO)
         {
             ++max;
             hIzq = A.hermDrcho(hIzq);
         }
         
+        max = max(max, max(degreeRec(A, A.hijoIzqdo(n)), degreeRec(A, A.hermDrcho(A.hijoIzqdo(n)))));
     }
 
     return max;
