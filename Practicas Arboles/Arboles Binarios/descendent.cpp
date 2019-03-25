@@ -8,6 +8,22 @@
 #include "abin_E-S.h"
 
 template <typename T>
+void deleteSons(Abin<T> &A, typename Abin<T>::nodo n)
+{
+    if (n != Abin<T>::NODO_NULO)
+    {
+        deleteSons(A,A.hijoIzqdoB(n));
+        deleteSons(A,A.hijoDrchoB(n));
+        
+        if(A.hijoIzqdoB(n) != Abin<T>::NODO_NULO)
+            A.eliminarHijoIzqdoB(n);
+
+        if(A.hijoDrchoB(n) != Abin<T>::NODO_NULO)
+            A.eliminarHijoDrchoB(n);
+    }
+}
+
+/*template <typename T>
 void deleteSons(Abin<T> A, typename Abin<T>::nodo n)
 {
     if(A.hijoIzqdoB(n) != Abin<T>::NODO_NULO)
@@ -29,7 +45,7 @@ void deleteSons(Abin<T> A, typename Abin<T>::nodo n)
         deleteSons(A, A.hijoDrchoB(n));
         deleteSons(A, n);
     }   
-}
+}*/
 
 template <typename T>
 void transformRec(Abin<T>& A, typename Abin<T>::nodo n)

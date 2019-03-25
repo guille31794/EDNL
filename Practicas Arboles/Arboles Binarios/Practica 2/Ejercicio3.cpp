@@ -34,7 +34,7 @@ basic_ostream<char>& operator <<
     return os;
 }
 
-/*double compute(Abin<mathExpr> T, Abin<mathExpr>::nodo n)
+double compute(Abin<mathExpr> T, Abin<mathExpr>::nodo n)
 {
     if(T.hijoIzqdoB(n) == Abin<mathExpr>::NODO_NULO && 
     T.hijoDrchoB(n) == Abin<mathExpr>::NODO_NULO)
@@ -55,9 +55,9 @@ basic_ostream<char>& operator <<
                 compute(T, T.hijoDrchoB(n));
                 break;
         }
-}*/
+}
 
-/*double postfix(Abin<mathExpr>& T)
+double postfix(Abin<mathExpr>& T)
 {
     double res{0.0};
 
@@ -68,9 +68,9 @@ basic_ostream<char>& operator <<
     }
 
     return res;
-}*/
+}
 
-double postfix(Abin<mathExpr> T)
+/*double postfix(Abin<mathExpr> T)
 {
     stack<mathExpr> S;
     queue<Abin<mathExpr>::nodo> Q;
@@ -143,7 +143,7 @@ double postfix(Abin<mathExpr> T)
     }
     
     return res;
-}
+}*/
 
 int main(int argc, char const *argv[])
 {
