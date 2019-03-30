@@ -2,14 +2,13 @@
 #include "../agen_E-S.h"
 
 template <typename T>
-int degreeRec(Agen<T> A, typename Agen<T>::nodo n)
+int degreeRec(Agen<T>& A, typename Agen<T>::nodo n)
 {
     int max = 0;
 
     if(n != Agen<T>::NODO_NULO)
     {
-        Agen<T>::nodo hIzq = n;
-        ++max;
+        typename Agen<T>::nodo hIzq = n;
         
         while(hIzq != Agen<T>::NODO_NULO)
         {
@@ -17,14 +16,17 @@ int degreeRec(Agen<T> A, typename Agen<T>::nodo n)
             hIzq = A.hermDrcho(hIzq);
         }
         
-        max = max(max, max(degreeRec(A, A.hijoIzqdo(n)), degreeRec(A, A.hermDrcho(A.hijoIzqdo(n)))));
+        if(A.hermDrcho(n) != Agen<T>::NODO_NULO)
+            max = std::max(max, std::max(degreeRec(A, A.hijoIzqdo(n)), degreeRec(A, A.hijoIzqdo(A.hermDrcho(n)))));
+        else
+            max = std::max(max, degreeRec(A, A.hijoIzqdo(n)));
     }
 
     return max;
 }
 
 template <typename T>
-int degree(Agen<T> A)
+int degree(Agen<T>& A)
 {
     int max = 0;
 
