@@ -15,6 +15,7 @@ template <typename T> class Abb {
         Abb(const Abb& A); // ctor. de copia
         Abb& operator =(const Abb& A); // asig. árboles
         ~Abb(); // destructor
+        void Poda(const T& e);
     private:
         struct arbol {
             T elto;
@@ -25,6 +26,23 @@ template <typename T> class Abb {
         T borrarMin();
         void copiar(const Abb& A);
 };
+
+template <typename T> void Abb<T>::Poda(const T& e)
+{
+    arbol father;
+    if(r != 0 && r -> elto != e)
+        if (e < r -> elto)
+            if(r -> izq.buscar(e).elto == e) 
+                father = r;
+            else
+                father = r -> izq.buscar(e); 
+        else if (e > r -> elto)
+            if (r -> der.buscar(e).elto == e) 
+                father = r;
+            
+            
+        
+}
 
 template <typename T> inline Abb<T>::Abb() : r(0) {}
 
