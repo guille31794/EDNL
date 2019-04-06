@@ -20,6 +20,8 @@ template <typename T> class Abin
         bool empty() const;
         int height() const;
         int heightRec(node n) const;
+        T& element(node n);
+        const T& element(node n) const;
     private:
         vector<T> tree;
         int depth(node n) const;
@@ -54,13 +56,15 @@ void Abin<T>::leftSonInsert(node n,T& e)
 template <typename T>
 typename Abin<T>::node Abin<T>::father(node n) const
 {
-    assert(n == Abin<T>::NULL_NODE);
+    assert(n != Abin<T>::NULL_NODE);
 
-    if ((n - tree.size()+1) / pow(2, depth(n)+1) 
-    {
-        
-    }
-    
+    Abin<T>::node d = depth(n);
+
+    if(n % (tree.size() + 1)/ pow(2, d - 1) == 
+    (tree.size() + 1 / pow(2, d + 1)) - 1)
+        return n + ((tree.size() + 1) / pow(2, d +1 ));
+    else
+        return n - ((tree.size() + 1) / pow(2, d + 1));
 }
 
 template <typename T>
@@ -87,7 +91,7 @@ inline int Abin<T>::height() const
     if(n == NULL_NODE)
         return -1;
     else
-        return 0 + max(depthRec(leftSon(n)), depthRec(rightSon(n))); 
+        return 0 + max(heightRec(leftSon(n)), heigthRec(rightSon(n))); 
 }
 
 template <typename T>
@@ -96,7 +100,7 @@ inline int Abin<T>::heightRec(typename Abin<T>::node n) const
     if(n == NULL_NODE)
         return 0;
     else
-        return 1 + max(depthRec(leftSon(n), depthRec(rightSon(n))));
+        return 1 + max(heigthRec(leftSon(n), heigthRec(rightSon(n))));
 }
 
 template <typename T>
@@ -121,5 +125,26 @@ template <typename T>
 inline typename Abin<T>::node Abin<T>::leftSon(node n) const
 {
     assert(n != NULL_NODE);
-    //return 
+    return n - ((tree.size() + 1) / pow(2, depth(n) + 2));  
+}
+
+template <typename T>
+inline typename Abin<T>::node Abin<T>::rightSon(node n) const
+{
+    assert(n != NULL_NODE);
+    return n + ((tree.size() + 1) / pow(2, depth(n) + 2));
+}
+
+template <typename T>
+inline const T& Abin<T>::element(Abin<T>::node n) const
+{
+    assert(n != NULL_NODE);
+    return tree[n];
+}
+
+template <typename T>
+inline T& Abin<T>::element(Abin<T>::node n)
+{
+    assert(n != NULL_NODE);
+    return tree[n];
 }
