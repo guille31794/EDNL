@@ -10,7 +10,7 @@ template <typename T> class Abin
     public:
         typedef int node;
         static const node NULL_NODE;
-        Abin(int h);
+        Abin(int d); //h es la profundidad máxima del arbol
         void rootInsert(T& e);
         void leftSonInsert(node n, T& e);
         node father(node n) const;
@@ -32,7 +32,7 @@ template <typename T>
 const typename Abin<T>::node Abin<T>::NULL_NODE{-1};
 
 template <typename T> 
-inline Abin<T>::Abin(int h): tree{new vector<T>(h)} {}
+inline Abin<T>::Abin(int d): tree{new vector<T>(pow(2, d+1) - 1)} {}
 
 template <typename T>
 inline void Abin<T>::rootInsert(T& e)
@@ -109,16 +109,19 @@ inline int depth(typename Abin<T>::node n)
     if(n == Abin<T>::NULL_NODE)
         return -1;
     else
-        return 0 + depthRec(father(n));
+        return 0 + depthRec(n, 0, Abin<T>::tree.size());
 }
 
 template <typename T>
-inline int depthRec(typename Abin<T>::node n)
+inline int depthRec(typename Abin<T>::node n, int i, int j)
 {
-    if (n == Abin<T>::NULL_NODE)
-        return 1;
-    else
-        return 1 + depthRec(father(n));
+    if (i <= j)
+        if (n < (i + j) / 2)
+            return 1 + depth(n, i, ((i + j) / 2) - 1);
+        else if (n > (i + j) / 2)
+            return 1 + depth(n, ((i + j) / 2 ) + 1, j);
+
+    return 0;
 }
 
 template <typename T>
