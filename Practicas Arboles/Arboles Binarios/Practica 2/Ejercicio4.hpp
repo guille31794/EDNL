@@ -11,8 +11,8 @@ template <typename T> class Abin
         typedef int node;
         static const node NULL_NODE;
         Abin(int d); //h es la profundidad máxima del arbol
-        void rootInsert(T& e);
-        void leftSonInsert(node n, T& e);
+        void rootInsert(const T& e);
+        void leftSonInsert(node n, const T& e);
         node father(node n) const;
         node root() const;
         node leftSon(node n) const;
@@ -22,7 +22,9 @@ template <typename T> class Abin
         int heightRec(node n) const;
         T& element(node n);
         const T& element(node n) const;
-    private:
+        void printA() const;
+        //friend ostream operator<<(ostream &, const Abin&); 
+    private: 
         vector<T> tree;
         int depth(node n) const;
         int depthRec(node n) const;
@@ -32,13 +34,13 @@ template <typename T>
 const typename Abin<T>::node Abin<T>::NULL_NODE{-1};
 
 template <typename T> 
-inline Abin<T>::Abin(int d): tree{new vector<T>(pow(2, d+1) - 1)} {}
+inline Abin<T>::Abin(int d): tree{vector<T>(pow(2, d+1) - 1)} {}
 
 template <typename T>
-inline void Abin<T>::rootInsert(T& e)
+inline void Abin<T>::rootInsert(const T& e)
 {
-    assert(tree.empty());
-    tree[tree.size()/2].push(e);
+    assert(!tree.empty());
+    tree[tree.size()/2] = e;
 }
 
 template <typename T>
@@ -48,9 +50,10 @@ inline bool Abin<T>::empty() const
 }
 
 template <typename T>
-void Abin<T>::leftSonInsert(node n,T& e)
+void Abin<T>::leftSonInsert(node n, const T& e)
 {
-
+    assert(tree[n + (tree.size() +1) / pow(2, depth(n) + 1)] == T{});
+    tree[n + (tree.size() + 1) / pow(2, depth(n) + 1)] = e;
 }
 
 template <typename T>
@@ -116,10 +119,13 @@ template <typename T>
 inline int depthRec(typename Abin<T>::node n, int i, int j)
 {
     if (i <= j)
+    {
         if (n < (i + j) / 2)
             return 1 + depth(n, i, ((i + j) / 2) - 1);
-        else if (n > (i + j) / 2)
-            return 1 + depth(n, ((i + j) / 2 ) + 1, j);
+        else 
+            if (n > (i + j) / 2)
+                return 1 + depth(n, ((i + j) / 2 ) + 1, j);
+    }
 
     return 0;
 }
@@ -151,3 +157,24 @@ inline T& Abin<T>::element(Abin<T>::node n)
     assert(n != NULL_NODE);
     return tree[n];
 }
+
+template <typename T>
+void Abin<T>::printA() const
+{
+    for(auto it : tree)
+    {
+        cout << it << ' ';
+    }
+    cout << endl;
+}
+
+/*template <typename T>
+ostream operator <<(ostream& os, const Abin<T>& A)
+{
+    for(auto it : A.tree)
+    {
+        os << A.tree[it] << ' ';
+    }
+    
+    return os;
+}*/
