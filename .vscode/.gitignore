@@ -5,3 +5,4 @@
 *.pdf
 *.d
 Make_check.mk
+*.ipch
