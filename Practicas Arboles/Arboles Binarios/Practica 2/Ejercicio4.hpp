@@ -2,6 +2,7 @@
 #include <cassert>
 #include <vector>
 #include <cmath>
+#include <algorithm>
 
 using namespace std;
 
@@ -23,6 +24,8 @@ template <typename T> class Abin
         T& element(node n);
         const T& element(node n) const;
         void printA() const;
+        int size() const;
+        int depthNode(node ) const;
         //friend ostream operator<<(ostream &, const Abin&); 
     private: 
         vector<T> tree;
@@ -52,8 +55,9 @@ inline bool Abin<T>::empty() const
 template <typename T>
 void Abin<T>::leftSonInsert(node n, const T& e)
 {
-    assert(tree[n + (tree.size() +1) / pow(2, depth(n) + 1)] == T{});
-    tree[n + (tree.size() + 1) / pow(2, depth(n) + 1)] = e;
+    assert(tree[n - (tree.size() +1) / pow(2, depth(n) + 1)] == T{});
+    //tree[n - ((tree.size() + 1) / pow(2, depth(n) + 1))] = e;
+    tree[n - (n+1)/2] = e;
 }
 
 template <typename T>
@@ -61,13 +65,13 @@ typename Abin<T>::node Abin<T>::father(node n) const
 {
     assert(n != Abin<T>::NULL_NODE);
 
-    Abin<T>::node d = depth(n);
+    Abin<T>::node d = depthNode(n);
 
     if(n % (tree.size() + 1)/ pow(2, d - 1) == 
     (tree.size() + 1 / pow(2, d + 1)) - 1)
-        return n + ((tree.size() + 1) / pow(2, d +1 ));
+        return n + (n+1)/2;
     else
-        return n - ((tree.size() + 1) / pow(2, d + 1));
+        return n - (n+1)/2;
 }
 
 template <typename T>
@@ -107,34 +111,42 @@ inline int Abin<T>::heightRec(typename Abin<T>::node n) const
 }
 
 template <typename T>
-inline int depth(typename Abin<T>::node n)
+inline int Abin<T>::depth(typename Abin<T>::node n) const
 {
-    if(n == Abin<T>::NULL_NODE)
+    if(n == Abin<T>::NULL_NODE || T{})
         return -1;
     else
-        return 0 + depthRec(n, 0, Abin<T>::tree.size());
+        if(n == tree.size()/2 + 1)
+            return 1;
+        else
+            return 1 + depthRec(n);
 }
 
 template <typename T>
-inline int depthRec(typename Abin<T>::node n, int i, int j)
+inline int Abin<T>::depthRec(typename Abin<T>::node n) const
 {
-    if (i <= j)
+    if (n-(n+1)/2 != 0 && n+(n+1)/2 <= tree.size())
     {
-        if (n < (i + j) / 2)
-            return 1 + depth(n, i, ((i + j) / 2) - 1);
-        else 
-            if (n > (i + j) / 2)
-                return 1 + depth(n, ((i + j) / 2 ) + 1, j);
+        if(tree[n-(n+1)/2] == T{} && tree[n+(n+1)/2] == T{})
+            return 0;
+        else
+            return 1 + max(depthRec(n-(n+1)/2), depthRec(n+(n+1)/2));
     }
 
     return 0;
 }
 
 template <typename T>
+inline int Abin<T>::depthNode(typename Abin<T>::node n) const
+{
+    return depth(n) - 1;
+}
+
+template <typename T>
 inline typename Abin<T>::node Abin<T>::leftSon(node n) const
 {
     assert(n != NULL_NODE);
-    return n - ((tree.size() + 1) / pow(2, depth(n) + 2));  
+    return n - ((tree.size() + 1) / pow(2, depth(n) + 1));  
 }
 
 template <typename T>
@@ -166,6 +178,12 @@ void Abin<T>::printA() const
         cout << it << ' ';
     }
     cout << endl;
+}
+
+template <typename T>
+int Abin<T>::size() const
+{
+    return tree.size();
 }
 
 /*template <typename T>
