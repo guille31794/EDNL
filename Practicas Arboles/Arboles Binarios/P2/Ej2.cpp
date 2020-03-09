@@ -5,16 +5,24 @@ template <typename T>
 void AbinReflectedRec( typename Abin<T>::nodo n1, 
 Abin<T> A, typename Abin<T>::nodo n2, Abin<T>& B)
 {
-    if(A.hijoIzqdo(n1) != Abin<T>::NODO_NULO)
+    if(A.hijoIzqdo(n1) != Abin<T>::NODO_NULO
+    && A.hijoDrcho(n1) != Abin<T>::NODO_NULO)
     {
         B.insertarHijoDrcho(n2, A.elemento(A.hijoIzqdo(n1)));
-        AbinReflectedRec(A, )
+        B.insertarHijoIzqdo(n2, A.elemento(A.hijoDrcho(n1)));
+        AbinReflectedRec(A.hijoIzqdo(n1), A, B.hijoDrcho(n2), B);
+        AbinReflectedRec(A.hijoDrcho(n1), A, B.hijoIzqdo(n2), B);
+    }
+    else if(A.hijoIzqdo(n1) != Abin<T>::NODO_NULO)
+    {
+        B.insertarHijoDrcho(n2, A.elemento(A.hijoIzqdo(n1)));
+        AbinReflectedRec(A.hijoIzqdo(n1), A, B.hijoDrcho(n2), B);
     }
     else
     {
-        
+        B.insertarHijoIzqdo(n2, A.elemento(A.hijoDrcho(n1)));
+        AbinReflectedRec(A.hijoDrcho(n1), A, B.hijoIzqdo(n2), B);
     }
-    
 }
 
 template <typename T>
