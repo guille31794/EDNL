@@ -22,9 +22,10 @@ void rellenarAbin(Abin<T>& A, const T& fin)
 
    assert(A.arbolVacioB());
    cout << "Raiz (Fin = " << fin << "): "; cin >> e;
-   if (e != fin) {
-      A.insertarRaizB(e);
-      rellenarDescendientes(A.raizB(), A, fin);
+   if (e != fin) 
+   {
+      A.insertarRaiz(e);
+      rellenarDescendientes(A.raiz(), A, fin);
    }
 }
 
@@ -36,21 +37,23 @@ void rellenarDescendientes(typename Abin<T>::nodo r, Abin<T>& A, const T& fin)
 {
    T ehi, ehd;
 
-   assert(A.hijoIzqdoB(r) == Abin<T>::NODO_NULO &&
-          A.hijoDrchoB(r) == Abin<T>::NODO_NULO);
+   assert(A.hijoIzqdo(r) == Abin<T>::NODO_NULO &&
+          A.hijoDrcho(r) == Abin<T>::NODO_NULO);
    cout << "Hijo izqdo. de " << A.elemento(r) <<
                 " (Fin = " << fin << "): ";
    cin >> ehi;
-   if (ehi != fin) {
-      A.insertarHijoIzqdoB(r, ehi);
-      rellenarDescendientes(A.hijoIzqdoB(r), A, fin);
+   if (ehi != fin) 
+   {
+      A.insertarHijoIzqdo(r, ehi);
+      rellenarDescendientes(A.hijoIzqdo(r), A, fin);
    }
    cout << "Hijo drcho. de " << A.elemento(r) <<
                 " (Fin = " << fin << "): ";
    cin >> ehd;
-   if (ehd != fin) {
-      A.insertarHijoDrchoB(r, ehd);
-      rellenarDescendientes(A.hijoDrchoB(r), A, fin);
+   if (ehd != fin) 
+   {
+      A.insertarHijoDrcho(r, ehd);
+      rellenarDescendientes(A.hijoDrcho(r), A, fin);
    }
 }
 
@@ -64,10 +67,11 @@ void rellenarAbin(istream& is, Abin<T>& A)
 {
    T e, fin;
 
-   assert(A.arbolVacioB());
-   if (is >> fin && is >> e && e != fin) {
-      A.insertarRaizB(e);
-      rellenarDescendientes(is, A.raizB(), A, fin);
+   assert(A.arbolVacio());
+   if (is >> fin && is >> e && e != fin) 
+   {
+      A.insertarRaiz(e);
+      rellenarDescendientes(is, A.raiz(), A, fin);
    }
 }
 
@@ -79,15 +83,17 @@ void rellenarDescendientes(istream& is, typename Abin<T>::nodo r, Abin<T>& A, co
 {
    T ehi, ehd;
 
-   assert(A.hijoIzqdoB(r) == Abin<T>::NODO_NULO &&
-          A.hijoDrchoB(r) == Abin<T>::NODO_NULO);
-   if (is >> ehi && ehi != fin) {
-      A.insertarHijoIzqdoB(r, ehi);
-      rellenarDescendientes(is, A.hijoIzqdoB(r), A, fin);
+   assert(A.hijoIzqdo(r) == Abin<T>::NODO_NULO &&
+          A.hijoDrcho(r) == Abin<T>::NODO_NULO);
+   if (is >> ehi && ehi != fin) 
+   {
+      A.insertarHijoIzqdo(r, ehi);
+      rellenarDescendientes(is, A.hijoIzqdo(r), A, fin);
    }
-   if (is >> ehd && ehd != fin) {
-      A.insertarHijoDrchoB(r, ehd);
-      rellenarDescendientes(is, A.hijoDrchoB(r), A, fin);
+   if (is >> ehd && ehd != fin) 
+   {
+      A.insertarHijoDrcho(r, ehd);
+      rellenarDescendientes(is, A.hijoDrcho(r), A, fin);
    }
 }
 
@@ -95,11 +101,11 @@ template <typename T>
 void imprimirAbin (const Abin<T>& A)
 // Post: Muestra los nodos de A en la salida estandar
 {
-   if (!A.arbolVacioB())
+   if (!A.arbolVacio())
    {
       cout << "Raiz del Arbol: "
-                << A.elemento(A.raizB()) << endl;
-      imprimirDescendientes(A.raizB(), A);
+                << A.elemento(A.raiz()) << endl;
+      imprimirDescendientes(A.raiz(), A);
    }
    else
       cout << "Arbol vacio\n";
@@ -109,17 +115,17 @@ template <typename T>
 void imprimirDescendientes (typename Abin<T>::nodo r, const Abin<T>& A)
 // Post: Muestra los descendientes de r en la salida estandar.
 {
-   if (A.hijoIzqdoB(r) != Abin<T>::NODO_NULO)
+   if (A.hijoIzqdo(r) != Abin<T>::NODO_NULO)
    {
       cout << "Hijo izqdo de " << A.elemento(r) << ": "
-                << A.elemento(A.hijoIzqdoB(r)) << endl;
-      imprimirDescendientes(A.hijoIzqdoB(r), A);
+                << A.elemento(A.hijoIzqdo(r)) << endl;
+      imprimirDescendientes(A.hijoIzqdo(r), A);
    }
-   if (A.hijoDrchoB(r) != Abin<T>::NODO_NULO)
+   if (A.hijoDrcho(r) != Abin<T>::NODO_NULO)
    {
       cout << "Hijo derecho de " << A.elemento(r) << ": "
-                << A.elemento(A.hijoDrchoB(r)) << endl;
-      imprimirDescendientes(A.hijoDrchoB(r), A);
+                << A.elemento(A.hijoDrcho(r)) << endl;
+      imprimirDescendientes(A.hijoDrcho(r), A);
    }
 }
 
@@ -128,11 +134,11 @@ void imprimirAbin (ostream& os, const Abin<T>& A, const T& fin)
 // Post: Inserta en el flujo de salida os los nodos de A en preorden,
 //       precedidos del elemento especial usado para denotar un nodo nulo.
 {
-   if (!A.arbolVacioB())
+   if (!A.arbolVacio())
    {
       os << fin << endl
-         << A.elemento(A.raizB()) << ' ';
-      imprimirDescendientes(os, A.raizB(), A, fin);
+         << A.elemento(A.raiz()) << ' ';
+      imprimirDescendientes(os, A.raiz(), A, fin);
       os << endl;
    }
 }
@@ -142,17 +148,17 @@ void imprimirDescendientes (ostream& os, typename Abin<T>::nodo r, const Abin<T>
 // Post: Inserta en el flujo de salida os y en preorden
 //       los descendientes de r, usando fin como nodo nulo.
 {
-   if (A.hijoIzqdoB(r) != Abin<T>::NODO_NULO)
+   if (A.hijoIzqdo(r) != Abin<T>::NODO_NULO)
    {
-      os << A.elemento(A.hijoIzqdoB(r)) << ' ';
-      imprimirDescendientes(os, A.hijoIzqdoB(r), A, fin);
+      os << A.elemento(A.hijoIzqdo(r)) << ' ';
+      imprimirDescendientes(os, A.hijoIzqdo(r), A, fin);
    }
    else
       os << fin << ' ';
-   if (A.hijoDrchoB(r) != Abin<T>::NODO_NULO)
+   if (A.hijoDrcho(r) != Abin<T>::NODO_NULO)
    {
-      os << A.elemento(A.hijoDrchoB(r)) << ' ';
-      imprimirDescendientes(os, A.hijoDrchoB(r), A, fin);
+      os << A.elemento(A.hijoDrcho(r)) << ' ';
+      imprimirDescendientes(os, A.hijoDrcho(r), A, fin);
    }
    else
       os << fin << ' ';
