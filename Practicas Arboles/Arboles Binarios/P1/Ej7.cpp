@@ -1,26 +1,36 @@
 #include "../abin.h"
 #include "../abin_E-S.h"
 
+/*
+    Si la altura del h.Izq > h.Der
+        pseudocompleto del izquierdo
+    sino si la altura del h.Der > h.Izq
+        pseudocompleto del derecho
+    sino
+
+*/
+
 template <typename T>
 bool AbinPseudoCompleteRec
 (Abin<T>& A, typename Abin<T>::nodo n)
 {
-    if(A.hijoIzqdoB(n) != Abin<T>::NODO_NULO
-    && A.hijoDrchoB(n) != Abin<T>::NODO_NULO)
-        return AbinPseudoCompleteRec(A, A.hijoDrchoB(n)) &&
-        AbinPseudoCompleteRec(A, A.hijoIzqdoB(n));
-    else if (A.hijoDrchoB(n) == Abin<T>::NODO_NULO
-    && A.hijoIzqdoB(n) == Abin<T>::NODO_NULO)
-        return true;
+    if(A.altura(A.hijoIzqdo(n)) > A.altura(A.hijoDrcho(n)))
+        return AbinPseudoCompleteRec(A, A.hijoIzqdo(A));
+    else if(A.altura(A.hijoDrcho(n)) > A.altura(A.hijoIzqdo(n)))
+        return AbinPseudoCompleteRec(A, A.hijoDrcho(n));
     else
-        return false;
+        return AbinPseudoCompleteRec(A, A.hijoIzqdo(n)) && 
+        AbinPseudoCompleteRec(A, A.hijoDrcho(n));
 }
 
 template <typename T>
 bool AbinPseudoComplete(Abin<T>& A)
 {
-    assert(!A.arbolVacioB());
-    return AbinPseudoCompleteRec(A, A.raizB());
+    //assert(!A.arbolVacioB());
+    if(A.arbolVacio())
+        return true;
+    else
+        return AbinPseudoCompleteRec(A, A.raiz());
 }
 
 int main(int argc, char const *argv[])

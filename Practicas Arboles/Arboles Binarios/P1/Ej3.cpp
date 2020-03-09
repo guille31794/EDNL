@@ -7,7 +7,7 @@ int AbinDeepthRec(Abin<T>& A, typename Abin<T>::nodo n)
     if(n == Abin<T>::NODO_NULO)
         return -1;
     else
-        return 1 + AbinDeepthRec(A, A.padreB(n));
+        return 1 + AbinDeepthRec(A, A.padre(n));
 }
 
 template <typename T>
@@ -24,10 +24,10 @@ int main(int argc, char const *argv[])
     rellenarAbin(file, A);
     imprimirAbin(A);
 
-    Abin<int>::nodo n = A.raizB();
-    n = A.hijoDrchoB(n);
-    n = A.hijoDrchoB(n);
-    n = A.hijoDrchoB(n);
+    Abin<int>::nodo n = A.raiz();
+    n = A.hijoDrcho(n);
+    n = A.hijoDrcho(n);
+    n = A.hijoDrcho(n);
 
     cout << "The deepth of the node is: " << 
     AbinDeepth(A, n) << endl;
