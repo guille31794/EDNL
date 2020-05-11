@@ -5,7 +5,8 @@
 
 using namespace std;
 
-template <typename T> class Abin {
+template <typename T> class Abin 
+{
     struct celda; // declaración adelantada privada
     public:
         typedef celda* nodo;
@@ -31,7 +32,9 @@ template <typename T> class Abin {
         int altura(nodo n) const;
     private:
         int alturaRec(typename Abin<T>::nodo n) const;
-        struct celda {
+        int profRec(typename Abin<T>::nodo n) const;
+        struct celda 
+        {
             T elto;
             nodo padre, hizq, hder;
             celda(const T& e, nodo p = NODO_NULO): elto(e),
@@ -58,21 +61,18 @@ int Abin<T>::alturaRec(typename Abin<T>::nodo n) const
 }
 
 template <typename T>
-int Abin<T>::profundidad(typename Abin<T>::nodo n) const
+inline int Abin<T>::profundidad(typename Abin<T>::nodo n) const
 {
-    int depth = -1;
-    if(!arbolVacioB())
-    {
-        while(n != Abin<T>::NODO_NULO)
-        {
-            ++depth;
-            n = padreB(n);
-        }
+    return profRec(n);
+}
 
-        return depth;   
-    }
-        
-    return depth;
+template <typename T>
+inline int Abin<T>::profRec(typename Abin<T>::nodo n) const
+{
+    if(n == Abin<T>::NODO_NULO)
+        return -1;
+    else
+        return 1 + profRec(padreB(n));
 }
 
 /* Definición del nodo nulo */

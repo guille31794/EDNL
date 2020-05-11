@@ -180,6 +180,41 @@ matriz<tCoste> Floyd(const GrafoP<tCoste>& G,
    return A;
 }
 
+template <typename tCoste>
+matriz<tCoste> FloydInv(const GrafoP<tCoste>& G,
+                     matriz<typename GrafoP<tCoste>::vertice>& P)
+// Calcula los caminos de coste mínimo entre cada
+// par de vértices del grafo G. Devuelve una matriz
+// de costes mínimos A de tamaño n x n, con n = G.numVert()
+// y una matriz de vértices P de tamaño n x n, tal que
+// P[i][j] es el vértice por el que pasa el camino de coste
+// mínimo de i a j, si este vértice es i el camino es directo.
+{
+   typedef typename GrafoP<tCoste>::vertice vertice;
+   const size_t n = G.numVert();
+   matriz<tCoste> A(n);   // matriz de costes mínimos
+
+   // Iniciar A y P con caminos directos entre cada par de vértices.
+   P = matriz<vertice>(n);
+   for (vertice i = 0; i < n; i++) {
+      A[i] = G[i];                    // copia costes del grafo
+      A[i][i] = 0;                    // diagonal a 0
+      P[i] = vector<vertice>(n, i);   // caminos directos
+   }
+   // Calcular costes mínimos y caminos correspondientes
+   // entre cualquier par de vértices i, j
+   for (vertice k = 0; k < n; k++)
+      for (vertice i = 0; i < n; i++)
+         for (vertice j = 0; j < n; j++) {
+            tCoste ikj = suma(A[i][k], A[k][j]);
+            if (ikj > A[i][j]) {
+               A[i][j] = ikj;
+               P[i][j] = k;
+            }
+         }
+   return A;
+}
+
 template <typename tCoste> typename GrafoP<tCoste>::tCamino
 caminoAux(typename GrafoP<tCoste>::vertice v,
           typename GrafoP<tCoste>::vertice w,
@@ -293,100 +328,60 @@ GrafoP<tCoste> Kruskall(const GrafoP<tCoste>& G)
    return g;
 }
 
-template <typename tCoste>
-vector<tCoste> DijkstraInvOpuesto(const GrafoP<tCoste>& G, typename GrafoP<tCoste>::vertice destino,
-                           vector<typename GrafoP<tCoste>::vertice>& P)
-{
-   typedef typename GrafoP<tCoste>::vertice vertice;
-   vertice v, w;
-   const size_t n = G.numVert();
-   vector<bool> S(n, false);                  // Conjunto de vértices vacío.
-   vector<tCoste> D;                          // Costes mínimos hasta destino.
-   
-   // Iniciar D y P con caminos directos hasta el vértice destino.
-   D = vector<tCoste> (n, -GrafoP<tCoste>::INFINITO);
-   D[destino] = 0;                             // Coste destino-destino es 0.
-   P = vector<vertice>(n, destino);
-   
-   // Calcular caminos de coste mínimo desde cada vértice.
-   S[destino] = true;                          // Incluir vértice destino en S.
-   
-   for (size_t i = 1; i <= n-2; i++) {
-      // Seleccionar vértice w no incluido en S
-      // con menor coste hasta destino.
-      
-      tCoste costeMax = -GrafoP<tCoste>::INFINITO;
-      for (v = 0; v < n; v++) {
-          if (!S[v] && D[v] >= costeMax) {
-             costeMax = D[v];
-             w = v;
-          }
-      }
-      S[w] = true;                          // Incluir vértice w en S.
-      
-      // Recalcular coste hasta cada v no incluido en S a través de w.
-      for (v = 0; v < n; v++) {
-          if (!S[v]) {
-             tCoste Dwv;
-             if(D[w] != -GrafoP<tCoste>::INFINITO) Dwv = suma(G[v][w], D[w]);
-             else Dwv = G[v][destino];
-             
-             if (Dwv >= D[v] && Dwv != GrafoP<tCoste>::INFINITO) {
-                D[v] = Dwv;
-                P[v] = (D[w] != GrafoP<tCoste>::INFINITO) ? w : v;
-             }
-          }
-      }
-   }
-   for (size_t i = 0; i < n; i++) {
-       if(D[i] == -GrafoP<tCoste>::INFINITO) D[i] = -D[i];
-   }
-   return D;
-}
 
-template <typename tCoste> vector<tCoste> DijkstraOpuesto(const GrafoP<tCoste>& G,
-typename GrafoP<tCoste>::vertice origen,
-vector<typename GrafoP<tCoste>::vertice>& P)
-// Calcula los caminos de coste mínimo entre origen y todos los
-// vértices del grafo G. En el vector D de tamaño G.numVert()
-// devuelve estos costes mínimos y P es un vector de tamaño
-// G.numVert() tal que P[i] es el último vértice del camino
-// de origen a i.
+template <typename tCoste>
+vector<tCoste> DijkstraInv(const GrafoP<tCoste>& G,
+                            typename GrafoP<tCoste>::vertice destino,
+                            vector<typename GrafoP<tCoste>::vertice>& P)
+//Calcula la operacion contraria a Dijkstra, en lugar del camino de costes
+//minimo de origen a todos los nodos hace el camino de costes minimo desde
+//todos los vertices hasta un destino
+//Como es ponderado bastara con hacer djistra desde destino al resto de vertices
 {
-   typedef typename GrafoP<tCoste>::vertice vertice;
-   vertice v, w;
-   const size_t n = G.numVert();
-   vector<bool> S(n, false);                  // Conjunto de vértices vacío.
-   vector<tCoste> D;                          // Costes mínimos desde origen.
-    
-   // Iniciar D y P con caminos directos desde el vértice origen.
-   D = G[origen];
-   D[origen] = 0;                             // Coste origen-origen es 0.
-   P = vector<vertice>(n, origen);
-    
-   // Calcular caminos de coste mínimo hasta cada vértice.
-   S[origen] = true;                          // Incluir vértice origen en S.
-   for (size_t i = 1; i <= n-2; i++) {
-      // Seleccionar vértice w no incluido en S
-      // con menor coste desde origen.
-      tCoste costeMax = -GrafoP<tCoste>::INFINITO;
-      for (v = 0; v < n; v++)
-         if (!S[v] && D[v] >= costeMax && D[v] != GrafoP<tCoste>::INFINITO) {
-            costeMax = D[v];
-            w = v;
-         }
-      S[w] = true;                          // Incluir vértice w en S.
-      // Recalcular coste hasta cada v no incluido en S a través de w.
-      for (v = 0; v < n; v++)
-         if (!S[v]) {
-            tCoste Owv = suma(D[w], G[w][v]);
-            if (Owv >= D[v] && Owv != GrafoP<tCoste>::INFINITO) {
-               D[v] = Owv;
-               P[v] = w;
-            }
-         }
-   }
-   return D;
+  typedef typename GrafoP<tCoste>::vertice vertice;
+  vertice v,w;
+  const size_t n=G.numVert();
+  vector<bool> S(n,false);
+  vector<tCoste> D(n);//no se si es necesario declarar el tamaño
+
+  //Inicar D y P con caminos directo desde el vertice destino
+  //Seleccionamos las columnas en lugar de en la fila
+  for(int i=0;i<=n-1;++i)
+  {
+    D[i]=G[i][destino];
+  }
+  D[destino]=0; //coste destino-destino=0 no INFINITO
+  P=vector<vertice>(n,destino);//tenemos los costes entres los vertices y destino
+
+  //Calcular caminos de coste minimo de cada vertice hasta destino
+  S[destino]=true;
+  for(size_t i=1;i<=n-2;i++)
+  {
+    tCoste costeMin =GrafoP<tCoste>::INFINITO;
+    for(v=0;v<=n-1;v++)
+    {
+      if(!S[v] && D[v] <= costeMin)
+      {
+        costeMin=D[v];
+        w=v;
+      }
+    }
+    S[w]=true; //Incluimos el vertice w como visitado
+
+    for(v=0;v<=n-1;v++)
+    {
+      if(!S[v])
+      {
+        tCoste vwD=suma(G[v][w],D[w]);//Aqui se inverte v y w en comparcion con djistra original
+        if(vwD<D[v])
+        {
+          D[v]=vwD;
+          P[v]=w;
+        }
+      }
+    }
+  }
+  return D;
 }
 
 #endif   // ALG_GRAFO_P_H
