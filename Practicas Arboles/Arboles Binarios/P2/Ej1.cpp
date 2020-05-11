@@ -7,9 +7,9 @@ typename Abin<T>::nodo n1, typename Abin<T>::nodo n2)
 {
     if(n1 != Abin<T>::NODO_NULO 
     && n2 != Abin<T>::NODO_NULO)
-        return AbinSimilarRec(A1, A2, A1.hijoIzqdoB(n1),
-        A2.hijoIzqdoB(n2)) && AbinSimilarRec(A1, A2, 
-        A1.hijoDrchoB(n1), A2.hijoDrchoB(n2));
+        return AbinSimilarRec(A1, A2, A1.hijoIzqdo(n1),
+        A2.hijoIzqdo(n2)) && AbinSimilarRec(A1, A2, 
+        A1.hijoDrcho(n1), A2.hijoDrcho(n2));
     else if (n1 == Abin<T>::NODO_NULO 
     && n2 == Abin<T>::NODO_NULO)
         return true;
@@ -20,8 +20,8 @@ typename Abin<T>::nodo n1, typename Abin<T>::nodo n2)
 template <typename T>
 bool AbinSimilar(Abin<T>& A1, Abin<T>& A2)
 {
-    return AbinSimilarRec(A1, A2, A1.raizB(), 
-    A2.raizB()); 
+    return AbinSimilarRec(A1, A2, A1.raiz(), 
+    A2.raiz()); 
 }
 
 int main(int argc, char const *argv[])

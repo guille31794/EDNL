@@ -7,14 +7,14 @@ int AbinHeightRec(Abin<T>& A, typename Abin<T>::nodo n)
     if(n == Abin<T>::NODO_NULO)
         return 0;
     else
-        return 1 + max(AbinHeightRec(A, A.hijoIzqdoB(n)), 
-        AbinHeightRec(A, A.hijoDrchoB(n)));
+        return 1 + max(AbinHeightRec(A, A.hijoIzqdo(n)), 
+        AbinHeightRec(A, A.hijoDrcho(n)));
 }
 
 template <typename T>
 int AbinHeight(Abin<T>& A)
 {
-    return AbinHeightRec(A, A.raizB());
+    return AbinHeightRec(A, A.raiz());
 }
 
 

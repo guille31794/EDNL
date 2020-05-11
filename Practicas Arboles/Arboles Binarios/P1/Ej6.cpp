@@ -7,8 +7,8 @@ int AbinHeightRec(Abin<T>& A, typename Abin<T>::nodo n)
     if(n == Abin<T>::NODO_NULO)
         return 0;
     else
-        return 1 + max(AbinHeightRec(A, A.hijoIzqdoB(n)), 
-        AbinHeightRec(A, A.hijoDrchoB(n)));
+        return 1 + max(AbinHeightRec(A, A.hijoIzqdo(n)), 
+        AbinHeightRec(A, A.hijoDrcho(n)));
 }
 
 template <typename T>
@@ -19,16 +19,16 @@ typename Abin<T>::nodo n)
         return -1;
     else
         return 1 + 
-        max(abs(AbinHeightRec(A, A.hijoDrchoB(n)) - 
-        AbinHeightRec(A, A.hijoIzqdoB(n))), 
-        max(AbinImbalanceRec(A, A.hijoIzqdoB(n)),
-        AbinImbalanceRec(A, A.hijoDrchoB(n))));
+        max(abs(AbinHeightRec(A, A.hijoDrcho(n)) - 
+        AbinHeightRec(A, A.hijoIzqdo(n))), 
+        max(AbinImbalanceRec(A, A.hijoIzqdo(n)),
+        AbinImbalanceRec(A, A.hijoDrcho(n))));
 }
 
 template <typename T>
 int AbinImbalance(Abin<T>& A)
 {
-    return AbinImbalanceRec(A, A.raizB());
+    return AbinImbalanceRec(A, A.raiz());
 }
 
 int main(int argc, char const *argv[])
