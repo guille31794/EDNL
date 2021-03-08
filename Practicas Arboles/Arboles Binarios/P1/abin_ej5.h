@@ -52,7 +52,7 @@ inline uint_fast8_t Abin<T>::altura(typename Abin<T>::nodo n) const
     if(NODO_NULO == n)
         return -1;
     else
-        return max(alturaRec(hijoIzqdo(n)), alturaRec(hijoDrcho(n)));
+        return max(alturaRec(n->hizq), alturaRec(n->hder));
 }
 
 template <typename T>
@@ -61,16 +61,16 @@ uint_fast8_t Abin<T>::alturaRec(typename Abin<T>::nodo n) const
     if(NODO_NULO == n)
         return 0;
     else
-        return 1 + max(alturaRec(hijoIzqdo(n)), alturaRec(hijoDrcho(n)));
+        return 1 + max(alturaRec(n->hizq), alturaRec(n->hder));
 }
 
 template <typename T>
 uint_fast8_t Abin<T>::profundidad(typename Abin<T>::nodo n) const
 {
-    if(raiz() == n)
+    if(r == n)
         return 0;
     else
-        return 1 + profundidad(padre(n));
+        return 1 + profundidad(n->padre);
 }
 
 /* Definición del nodo nulo */

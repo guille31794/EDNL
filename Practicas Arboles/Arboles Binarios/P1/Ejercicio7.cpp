@@ -24,7 +24,7 @@ bool pseudoComplete(Abin<T>& A, typename Abin<T>::nodo n)
             return false;
     else if (Abin<T>::NODO_NULO != A.hijoIzqdo(n) && Abin<T>::NODO_NULO == A.hijoDrcho(n))
         return pseudoComplete(A, A.hijoIzqdo(n));
-    else if (Abin<T>::NODO_NULO != A.hijoIzqdo(n) && Abin<T>::NODO_NULO == A.hijoDrcho(n))
+    else if (Abin<T>::NODO_NULO == A.hijoIzqdo(n) && Abin<T>::NODO_NULO != A.hijoDrcho(n))
         return pseudoComplete(A, A.hijoDrcho(n));
     else
         return pseudoComplete(A, A.hijoIzqdo(n)) && pseudoComplete(A, A.hijoDrcho(n));
@@ -33,7 +33,7 @@ bool pseudoComplete(Abin<T>& A, typename Abin<T>::nodo n)
 int main(int argc, char const *argv[])
 {
     ifstream ef("abin.dat");
-    Abin<uint_fast8_t> T;
+    Abin<int> T;
     rellenarAbin(ef, T);
     ef.close();
 

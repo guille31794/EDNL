@@ -13,119 +13,113 @@ using std::endl;
 
 template <typename T>
 void rellenarAbin(Abin<T>& A, const T& fin)
-// Pre: A esta vacio.
-// Post: Rellena el arbol A con la estructura y elementos
-//       leidos en preorden de la entrada estandar, usando
+// Pre: A está vacío.
+// Post: Rellena el árbol A con la estructura y elementos
+//       leídos en preorden de la entrada estándar, usando
 //       fin como elemento especial para introducir nodos nulos.
 {
    T e;
 
-   assert(A.arbolVacioB());
-   cout << "Raiz (Fin = " << fin << "): "; cin >> e;
-   if (e != fin) 
-   {
+   assert(A.arbolVacio());
+   cout << "Raíz (Fin = " << fin << "): "; cin >> e;
+   if (e != fin) {
       A.insertarRaiz(e);
       rellenarDescendientes(A.raiz(), A, fin);
    }
 }
 
 template <typename T>
-void rellenarDescendientes(typename Abin<T>::nodo r, Abin<T>& A, const T& fin)
-// Pre: r es un nodo hoja de A.
-// Post: Lee de la entrada estandar y en preorden los descendientes de r,
+void rellenarDescendientes(typename Abin<T>::nodo n, Abin<T>& A, const T& fin)
+// Pre: n es un nodo hoja de A.
+// Post: Lee de la entrada estándar y en preorden los descendientes de n,
 //       usando fin para introducir nodos nulos.
 {
    T ehi, ehd;
 
-   assert(A.hijoIzqdo(r) == Abin<T>::NODO_NULO &&
-          A.hijoDrcho(r) == Abin<T>::NODO_NULO);
-   cout << "Hijo izqdo. de " << A.elemento(r) <<
+   assert(A.hijoIzqdo(n) == Abin<T>::NODO_NULO &&
+          A.hijoDrcho(n) == Abin<T>::NODO_NULO);
+   cout << "Hijo izqdo. de " << A.elemento(n) <<
                 " (Fin = " << fin << "): ";
    cin >> ehi;
-   if (ehi != fin) 
-   {
-      A.insertarHijoIzqdo(r, ehi);
-      rellenarDescendientes(A.hijoIzqdo(r), A, fin);
+   if (ehi != fin) {
+      A.insertarHijoIzqdo(n, ehi);
+      rellenarDescendientes(A.hijoIzqdo(n), A, fin);
    }
-   cout << "Hijo drcho. de " << A.elemento(r) <<
+   cout << "Hijo drcho. de " << A.elemento(n) <<
                 " (Fin = " << fin << "): ";
    cin >> ehd;
-   if (ehd != fin) 
-   {
-      A.insertarHijoDrcho(r, ehd);
-      rellenarDescendientes(A.hijoDrcho(r), A, fin);
+   if (ehd != fin) {
+      A.insertarHijoDrcho(n, ehd);
+      rellenarDescendientes(A.hijoDrcho(n), A, fin);
    }
 }
 
 template <typename T>
 void rellenarAbin(istream& is, Abin<T>& A)
-// Pre: A esta vacio.
+// Pre: A está vacío.
 // Post: Extrae los nodos de A del flujo de entrada is,
-//       que contendra el elemento especial que denota
+//       que contendrá el elemento especial que denota
 //       un nodo nulo seguido de los elementos en preorden,
 //       incluyendo los correspondientes a nodos nulos.
 {
    T e, fin;
 
    assert(A.arbolVacio());
-   if (is >> fin && is >> e && e != fin) 
-   {
+   if (is >> fin && is >> e && e != fin) {
       A.insertarRaiz(e);
       rellenarDescendientes(is, A.raiz(), A, fin);
    }
 }
 
 template <typename T>
-void rellenarDescendientes(istream& is, typename Abin<T>::nodo r, Abin<T>& A, const T& fin)
-// Pre: r es un nodo hoja de A.
-// Post: Lee del flujo de entrada is y en preorden los descendientes de r,
+void rellenarDescendientes(istream& is, typename Abin<T>::nodo n, Abin<T>& A, const T& fin)
+// Pre: n es un nodo hoja de A.
+// Post: Lee del flujo de entrada is y en preorden los descendientes de n,
 //       usando fin para los nodos nulos.
 {
    T ehi, ehd;
 
-   assert(A.hijoIzqdo(r) == Abin<T>::NODO_NULO &&
-          A.hijoDrcho(r) == Abin<T>::NODO_NULO);
-   if (is >> ehi && ehi != fin) 
-   {
-      A.insertarHijoIzqdo(r, ehi);
-      rellenarDescendientes(is, A.hijoIzqdo(r), A, fin);
+   assert(A.hijoIzqdo(n) == Abin<T>::NODO_NULO &&
+          A.hijoDrcho(n) == Abin<T>::NODO_NULO);
+   if (is >> ehi && ehi != fin) {
+      A.insertarHijoIzqdo(n, ehi);
+      rellenarDescendientes(is, A.hijoIzqdo(n), A, fin);
    }
-   if (is >> ehd && ehd != fin) 
-   {
-      A.insertarHijoDrcho(r, ehd);
-      rellenarDescendientes(is, A.hijoDrcho(r), A, fin);
+   if (is >> ehd && ehd != fin) {
+      A.insertarHijoDrcho(n, ehd);
+      rellenarDescendientes(is, A.hijoDrcho(n), A, fin);
    }
 }
 
 template <typename T>
 void imprimirAbin (const Abin<T>& A)
-// Post: Muestra los nodos de A en la salida estandar
+// Post: Muestra los nodos de A en la salida estándar.
 {
    if (!A.arbolVacio())
    {
-      cout << "Raiz del Arbol: "
+      cout << "Raíz del árbol: "
                 << A.elemento(A.raiz()) << endl;
       imprimirDescendientes(A.raiz(), A);
    }
    else
-      cout << "Arbol vacio\n";
+      cout << "Árbol vacío\n";
 }
 
 template <typename T>
-void imprimirDescendientes (typename Abin<T>::nodo r, const Abin<T>& A)
-// Post: Muestra los descendientes de r en la salida estandar.
+void imprimirDescendientes (typename Abin<T>::nodo n, const Abin<T>& A)
+// Post: Muestra los descendientes de n en la salida estándar.
 {
-   if (A.hijoIzqdo(r) != Abin<T>::NODO_NULO)
+   if (A.hijoIzqdo(n) != Abin<T>::NODO_NULO)
    {
-      cout << "Hijo izqdo de " << A.elemento(r) << ": "
-                << A.elemento(A.hijoIzqdo(r)) << endl;
-      imprimirDescendientes(A.hijoIzqdo(r), A);
+      cout << "Hijo izqdo de " << A.elemento(n) << ": "
+                << A.elemento(A.hijoIzqdo(n)) << endl;
+      imprimirDescendientes(A.hijoIzqdo(n), A);
    }
-   if (A.hijoDrcho(r) != Abin<T>::NODO_NULO)
+   if (A.hijoDrcho(n) != Abin<T>::NODO_NULO)
    {
-      cout << "Hijo derecho de " << A.elemento(r) << ": "
-                << A.elemento(A.hijoDrcho(r)) << endl;
-      imprimirDescendientes(A.hijoDrcho(r), A);
+      cout << "Hijo derecho de " << A.elemento(n) << ": "
+                << A.elemento(A.hijoDrcho(n)) << endl;
+      imprimirDescendientes(A.hijoDrcho(n), A);
    }
 }
 
@@ -144,21 +138,21 @@ void imprimirAbin (ostream& os, const Abin<T>& A, const T& fin)
 }
 
 template <typename T>
-void imprimirDescendientes (ostream& os, typename Abin<T>::nodo r, const Abin<T>& A, const T& fin)
+void imprimirDescendientes (ostream& os, typename Abin<T>::nodo n, const Abin<T>& A, const T& fin)
 // Post: Inserta en el flujo de salida os y en preorden
-//       los descendientes de r, usando fin como nodo nulo.
+//       los descendientes de n, usando fin como nodo nulo.
 {
-   if (A.hijoIzqdo(r) != Abin<T>::NODO_NULO)
+   if (A.hijoIzqdo(n) != Abin<T>::NODO_NULO)
    {
-      os << A.elemento(A.hijoIzqdo(r)) << ' ';
-      imprimirDescendientes(os, A.hijoIzqdo(r), A, fin);
+      os << A.elemento(A.hijoIzqdo(n)) << ' ';
+      imprimirDescendientes(os, A.hijoIzqdo(n), A, fin);
    }
    else
       os << fin << ' ';
-   if (A.hijoDrcho(r) != Abin<T>::NODO_NULO)
+   if (A.hijoDrcho(n) != Abin<T>::NODO_NULO)
    {
-      os << A.elemento(A.hijoDrcho(r)) << ' ';
-      imprimirDescendientes(os, A.hijoDrcho(r), A, fin);
+      os << A.elemento(A.hijoDrcho(n)) << ' ';
+      imprimirDescendientes(os, A.hijoDrcho(n), A, fin);
    }
    else
       os << fin << ' ';
