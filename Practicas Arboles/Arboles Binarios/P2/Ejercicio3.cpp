@@ -19,16 +19,16 @@ istream& operator >>(istream& is, Expression& ex)
     is >> s;
 
     ex.operand = strtod(s.c_str(), NULL);
-
+    
     if(ex.operand == 0.0)
         ex.math_operator = s.c_str()[0];
-
+    
     return is;
 }
 
 ostream& operator <<(ostream& os, Expression ex)
 {
-    if(ex.operand == 0.0) 
+    if( ex.operand < 1.0 / 10000000) 
         os << ex.math_operator;
     else
         os << std::to_string(ex.operand);
@@ -50,13 +50,15 @@ bool operator !=(Expression ex1, Expression ex2)
 
 double computeTree(Abin<Expression>& T, Abin<Expression>::nodo n)
 {
-    if(Abin<Expression>::NODO_NULO == T.hijoIzqdo(n) && Abin<Expression>::NODO_NULO == T.hijoDrcho(n))
-        return T.elemento(T.padre(n)).operand;
+    if(Abin<Expression>::NODO_NULO == T.hijoIzqdo(n))
+        return T.elemento(n).operand;
     else switch(T.elemento(n).math_operator)
     {
         case '+': return computeTree(T, T.hijoIzqdo(n)) + computeTree(T, T.hijoDrcho(n));
         break;
         case '-': return computeTree(T, T.hijoIzqdo(n)) - computeTree(T, T.hijoDrcho(n));
+        break;
+        case 'x': return computeTree(T, T.hijoIzqdo(n)) * computeTree(T, T.hijoDrcho(n));
         break;
         case '*': return computeTree(T, T.hijoIzqdo(n)) * computeTree(T, T.hijoDrcho(n));
         break;
@@ -82,6 +84,8 @@ int main(int argc, char const *argv[])
     ef.close();
 
     imprimirAbin(T);
+
+    cout << "The result is: " << computeTree(T) << endl;
 
     return 0;
 }
