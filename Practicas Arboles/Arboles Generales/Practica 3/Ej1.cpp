@@ -15,20 +15,20 @@ unsigned degree(Agen<T>& A)
 }
 
 template <typename T>
-unsigned degree(Agent<T>& A, typename Agen<T>::nodo n)
+unsigned degree(Agen<T>& A, typename Agen<T>::nodo n)
 {
     if(Agen<T>::NODO_NULO == n)
         return 0;
     else
     {
-        unsigned n_sons = numberOfSons(A, A.hijoIzqdo(n));
+        unsigned n_sons = numberOfSons(A, n);
 
-        n = A.hijoIzqdo(n);
+        typename Agen<T>::nodo son = A.hijoIzqdo(n);
 
-        while(Agen<T>::NODO_NULO != n)
+        while(Agen<T>::NODO_NULO != son)
         {
-            n_sons = max(n_sons, degree(A, A.hijoIzqdo(n)));
-            n = A.hermanoDrcho(n);
+            n_sons = max(n_sons, degree(A, son));
+            son = A.hermDrcho(son);
         }
 
         return n_sons;
@@ -39,13 +39,20 @@ template <typename T>
 unsigned numberOfSons(Agen<T>& A, typename Agen<T>::nodo n)
 {
     unsigned n_sons = 0;
+    n = A.hijoIzqdo(n);
 
-    while(Agen<T>::NODO_NULO != n)
-    { 
+    if(Agen<T>::NODO_NULO != n)
+    {
         ++n_sons;
-        n = A.hermanoDrcho(n);
-    }
+        n = A.hermDrcho(n);
 
+        while (Agen<T>::NODO_NULO != n)
+        {
+            ++n_sons;
+            n = A.hermDrcho(n);
+        }
+    }
+    
     return n_sons;
 }
 
