@@ -8,17 +8,17 @@
 using namespace std;
 
 template <typename A>
-int height(Agen<A> T, typename Agen<A>::nodo n)
+int altura(typename Agen<A>::nodo n, Agen<A> T)
 {
     if(Agen<A>::NODO_NULO == n)
         return -1;
     else
     {
-        int hmax = 1 + height(T, T.hijoIzqdo(n));
-        
+        int hmax = 1 + altura(T.hijoIzqdo(n), T);
+
         while(Agen<A>::NODO_NULO != n)
         {
-            hmax = max(hmax, height(T, T.hermDrcho(n)));
+            hmax = max(hmax, altura(T.hermDrcho(n), T));
             n = T.hermDrcho(n);
         }
         
@@ -27,32 +27,34 @@ int height(Agen<A> T, typename Agen<A>::nodo n)
 }
 
 template <typename A>
-int unbalance(Agen<A> T)
+int desequilibrio(Agen<A> T)
 {
     if(T.arbolVacio())
         return 0;
     else
-        return unbalance(T, T.raiz());
+        return desequilibrioRec(T.raiz(), T);
 }
 
 template <typename A>
-int unbalance(Agen<A> T, typename Agen<A>::nodo n)
+int desequilibrioRec(typename Agen<A>::nodo n, Agen<A> T)
 {
     if(Agen<A>::NODO_NULO == n)
-        return -1;
+        return 0;
     else
     {
-        int umax = max(abs(height(T, n) - height(T, T.hermDrcho(n))), 
-        unbalance(T, T.hijoIzqdo(n)));
-        n = T.hermDrcho(n);
+        typename Agen<A>::nodo hijo = T.hijoIzqdo(n);
+        int rama_larga, rama_corta, desequilibrio = 0;
 
-        while (Agen<A>::NODO_NULO != n)
+        rama_larga = rama_corta = altura(hijo, T);
+        while(hijo != Agen<A>::NODO_NULO)
         {
-            umax = max(umax, unbalance(T, T.hermDrcho(n)));
-            n = T.hermDrcho(n);
+            desequilibrio = max(rama_larga-rama_corta, desequilibrioRec(hijo, T));
+            hijo = T.hermDrcho(hijo);
+            rama_larga = max(rama_larga, altura(hijo, T));
+            rama_corta = min(rama_corta, altura(hijo, T));
         }
 
-        return umax;
+        return 1 + desequilibrio;
     }
 }
 
@@ -65,8 +67,8 @@ int main()
     inf.close();
     imprimirAgen(T);
 
-    cout << "The height of the tree is: " << height(T, T.raiz()) << endl;
-    cout << "The unbalance of the tree is: " << unbalance(T) << endl;
+    cout << "The altura of the tree is: " << altura(T.raiz(), T) << endl;
+    cout << "The desequilibrio of the tree is: " << desequilibrio(T) << endl;
     
     return 0;
 }
