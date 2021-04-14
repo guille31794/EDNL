@@ -1,4 +1,4 @@
-#include "Ejercicio1.hpp"
+#include "Ejercicio2.hpp"
 #include "abb_ES.h"
 
 using namespace std;
@@ -6,9 +6,10 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     Abb<int> A;
-    ifstream fe("abb.dat");
+    int fin{-1};
+    ifstream fe("ej2.dat");
 
-    rellenarAbb(A, fe);
+    rellenarAbb(A, fe, fin);
     fe.close();
 
     imprimirAbb(A);
