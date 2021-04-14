@@ -12,8 +12,8 @@ int main(int argc, char const *argv[])
     fe.close();
 
     imprimirAbb(A);
-    A.poda(8);
-    
+    A.equilibrar();
+
     cout << "El nuevo arbol es: ";
     imprimirAbb(A);
 
