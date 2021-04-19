@@ -53,11 +53,6 @@ Abb<T> equilibrar(Abb<T>& A)
 
     recorridoInorden(A, lista);
 
-    for(auto e : lista)
-        cout << e << " ";
-
-    cout << endl;
-
     I = 0;
     D = lista.size() - 1;
 
