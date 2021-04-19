@@ -8,7 +8,7 @@ int main(int argc, char const *argv[])
 {
     Abb<int> A, B;
     int fin = -1;
-    ofstream fs("ej2.dat");
+    ofstream fs("ej3.dat");
 
     rellenarAbb(A, fin);
     imprimirAbb(A, fs, fin);
@@ -16,7 +16,7 @@ int main(int argc, char const *argv[])
     
     fs.close();
 
-    ifstream fe("ej2.dat");
+    ifstream fe("ej3.dat");
     rellenarAbb(B, fe, fin);
     imprimirAbb(B);
 
