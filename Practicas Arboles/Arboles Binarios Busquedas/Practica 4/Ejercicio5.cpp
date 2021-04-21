@@ -5,10 +5,19 @@
 using namespace std;
 
 template <typename T>
-Abb<T> interseccionAbb(Abb<T>& A, Abb<T>& B);
+using Conjunto = Abb<T>;
 
 template <typename T>
-void intersecarRec(Abb<T>& I, const Abb<T>& A, Abb<T>& B);
+Conjunto<T> operator *(Conjunto<T>& A, Conjunto<T>& B);
+
+template <typename T>
+Conjunto<T> operator -(Conjunto<T> &A, Conjunto<T> &B);
+
+template <typename T>
+Abb<T> interseccionAbb(Abb<T> &A, Abb<T> &B);
+
+template <typename T>
+void intersecarRec(Abb<T> &I, const Abb<T> &A, Abb<T> &B);
 
 template <typename T>
 Abb<T> unionAbb(Abb<T> &A, Abb<T> &B);
@@ -52,9 +61,24 @@ int main(int argc, char const *argv[])
 }
 
 template <typename T>
-Abb<T> interseccionAbb(Abb<T>& A, Abb<T>& B)
+Conjunto<T> operator *(Conjunto<T> &A, Conjunto<T> &B)
 {
-    Abb<T> I(unionAbb(A,B));
+    Conjunto<T> I(interseccionAbb(A, B)),
+    U(unionAbb(A,B)), P(U-I);
+
+    return P;
+}
+
+template <typename T>
+Conjunto<T> operator -(Conjunto<T> &A, Conjunto<T> &B)
+{
+
+}
+
+template <typename T>
+Abb<T> interseccionAbb(Abb<T> &A, Abb<T> &B)
+{
+    Abb<T> I(unionAbb(A, B));
 
     intersecarRec(I, A, B);
 
@@ -62,9 +86,9 @@ Abb<T> interseccionAbb(Abb<T>& A, Abb<T>& B)
 }
 
 template <typename T>
-void intersecarRec(Abb<T>& I, const Abb<T>& A, Abb<T>& B)
+void intersecarRec(Abb<T> &I, const Abb<T> &A, Abb<T> &B)
 {
-    if(!A.vacio())
+    if (!A.vacio())
     {
         if (!(B.buscar(A.elemento())).vacio())
             I.eliminar(A.elemento());
