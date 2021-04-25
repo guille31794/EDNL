@@ -54,7 +54,7 @@ int main(int argc, char const *argv[])
 template <typename T>
 Abb<T> interseccionAbb(Abb<T>& A, Abb<T>& B)
 {
-    Abb<T> I(unionAbb(A,B));
+    Abb<T> I;
 
     intersecarRec(I, A, B);
 
@@ -67,7 +67,7 @@ void intersecarRec(Abb<T>& I, const Abb<T>& A, Abb<T>& B)
     if(!A.vacio())
     {
         if (!(B.buscar(A.elemento())).vacio())
-            I.eliminar(A.elemento());
+            I.insertar(A.elemento());
 
         intersecarRec(I, A.izqdo(), B);
         intersecarRec(I, A.drcho(), B);

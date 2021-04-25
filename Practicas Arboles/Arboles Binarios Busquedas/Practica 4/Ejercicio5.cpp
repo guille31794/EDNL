@@ -14,6 +14,12 @@ template <typename T>
 Conjunto<T> operator -(Conjunto<T> &A, Conjunto<T> &B);
 
 template <typename T>
+void diferenciaAbb(Conjunto<T> &A, const Conjunto<T> &B);
+
+template <typename T>
+bool pertenece(const T &e, Abb<T> &A);
+
+template <typename T>
 Abb<T> interseccionAbb(Abb<T> &A, Abb<T> &B);
 
 template <typename T>
@@ -39,7 +45,7 @@ void suma(Abb<T> &A, const Abb<T> &B);
 
 int main(int argc, char const *argv[])
 {
-    Abb<int> A, B, I;
+    Abb<int> A, B, P;
     int fin{-1};
     ifstream fe("ej2.dat");
 
@@ -52,10 +58,10 @@ int main(int argc, char const *argv[])
 
     imprimirAbb(A);
     imprimirAbb(B);
-    I = interseccionAbb(A, B);
+    P = A*B;
 
     cout << "El nuevo arbol es: \n";
-    imprimirAbb(I);
+    imprimirAbb(P);
 
     return 0;
 }
@@ -64,21 +70,47 @@ template <typename T>
 Conjunto<T> operator *(Conjunto<T> &A, Conjunto<T> &B)
 {
     Conjunto<T> I(interseccionAbb(A, B)),
-    U(unionAbb(A,B)), P(U-I);
-
+    U(unionAbb(A,B)), P(U-I);    
+    
     return P;
 }
 
 template <typename T>
 Conjunto<T> operator -(Conjunto<T> &A, Conjunto<T> &B)
 {
+    Conjunto<T> D(A);
 
+    diferenciaAbb(D, B);
+
+    return D;
+}
+
+template <typename T>
+void diferenciaAbb(Conjunto<T> &A, const Conjunto<T>& B)
+{
+    if (!B.vacio())
+    {
+        if (pertenece(B.elemento(), A))
+            A.eliminar(B.elemento());
+        
+        diferenciaAbb(A, B.izqdo());
+        diferenciaAbb(A, B.drcho());
+    }
+}
+
+template <typename T>
+bool pertenece(const T &e, Abb<T> &A)
+{
+    if (A.buscar(e).vacio())
+        return false;
+    else
+        return true;
 }
 
 template <typename T>
 Abb<T> interseccionAbb(Abb<T> &A, Abb<T> &B)
 {
-    Abb<T> I(unionAbb(A, B));
+    Abb<T> I;
 
     intersecarRec(I, A, B);
 
@@ -91,7 +123,7 @@ void intersecarRec(Abb<T> &I, const Abb<T> &A, Abb<T> &B)
     if (!A.vacio())
     {
         if (!(B.buscar(A.elemento())).vacio())
-            I.eliminar(A.elemento());
+            I.insertar(A.elemento());
 
         intersecarRec(I, A.izqdo(), B);
         intersecarRec(I, A.drcho(), B);
